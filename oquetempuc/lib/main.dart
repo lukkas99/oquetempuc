@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:oquetempuc/principal.dart';
 import 'login.dart';
+import 'cadastro.dart';
+import 'principal.dart';
 
 class AppColors {
   static const Color cobalt = Color(0xFF000C76); // Sua cor personalizada
@@ -85,11 +88,16 @@ class _TelaInicial extends State<TelaInicial> {
                               // border radius
                               borderRadius: BorderRadius.circular(10))),
                       onPressed: () {
-                        debugPrint('Received click');
-                        // Lógica de login para o primeiro botão
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TelaPrincipal(
+                                    email: '',
+                                  )),
+                        );
                       },
                       child: const Text(
-                        'ENTRAR SEM LOG IN',
+                        'ENTRAR SEM LOGIN',
                         style: TextStyle(
                           color: AppColors.cobalt,
                         ),
@@ -114,7 +122,7 @@ class _TelaInicial extends State<TelaInicial> {
                         );
                       },
                       child: const Text(
-                        'FAZER LOG IN',
+                        'FAZER LOGIN',
                         style: TextStyle(
                           color: AppColors.cobalt,
                         ),
@@ -135,8 +143,10 @@ class _TelaInicial extends State<TelaInicial> {
                           // border radius
                           borderRadius: BorderRadius.circular(10))),
                   onPressed: () {
-                    debugPrint('Received click');
-                    // Lógica de login para o segundo botão
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Cadastro()),
+                    );
                   },
                   child: const Text(
                     'CADASTRAR',
