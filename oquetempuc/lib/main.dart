@@ -3,6 +3,8 @@ import 'login.dart';
 
 class AppColors {
   static const Color cobalt = Color(0xFF000C76); // Sua cor personalizada
+  static const Color snow =
+      Color.fromARGB(255, 237, 237, 237); // Sua cor personalizada
 }
 
 void main() {
@@ -37,7 +39,7 @@ class _TelaInicial extends State<TelaInicial> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 //Icon
-                ImageIcon(
+                const ImageIcon(
                   AssetImage('assets/images/iconPrincipal.png'),
                   color: Colors.white,
                   size: 150.0,
@@ -55,7 +57,7 @@ class _TelaInicial extends State<TelaInicial> {
                           ..color = AppColors.cobalt,
                       ),
                     ),
-                    Text(
+                    const Text(
                       'O que tem? \n PUC Coreu',
                       style: TextStyle(
                         fontSize: 48,
@@ -86,7 +88,7 @@ class _TelaInicial extends State<TelaInicial> {
                         debugPrint('Received click');
                         // Lógica de login para o primeiro botão
                       },
-                      child: Text(
+                      child: const Text(
                         'ENTRAR SEM LOG IN',
                         style: TextStyle(
                           color: AppColors.cobalt,
@@ -106,10 +108,12 @@ class _TelaInicial extends State<TelaInicial> {
                               // border radius
                               borderRadius: BorderRadius.circular(10))),
                       onPressed: () {
-                        debugPrint('Received click');
-                        // Lógica de login para o segundo botão
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => TelaLogin()),
+                        );
                       },
-                      child: Text(
+                      child: const Text(
                         'FAZER LOG IN',
                         style: TextStyle(
                           color: AppColors.cobalt,
@@ -134,7 +138,7 @@ class _TelaInicial extends State<TelaInicial> {
                     debugPrint('Received click');
                     // Lógica de login para o segundo botão
                   },
-                  child: Text(
+                  child: const Text(
                     'CADASTRAR',
                     style: TextStyle(
                       color: Colors.white,
