@@ -6,6 +6,7 @@ class CadastroCliente extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordConfirm = TextEditingController();
   TextEditingController userController = TextEditingController();
 
   @override
@@ -121,6 +122,38 @@ class CadastroCliente extends StatelessWidget {
                     height: MediaQuery.of(context).size.width *
                         0.05), // Espaço entre a senha e o botão de login
                 TextFormField(
+                  controller: passwordConfirm,
+                  decoration: InputDecoration(
+                    labelText: 'Confirme sua senha',
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide(
+                        color: AppColors.cobalt,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide(
+                        color: AppColors.cobalt,
+                        width: 2.0,
+                      ),
+                    ),
+                    labelStyle: TextStyle(
+                      color: AppColors
+                          .cobalt, // Defina a cor desejada para o texto do rótulo
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your password';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(
+                    height: MediaQuery.of(context).size.width *
+                        0.05), // Espaço entre a senha e o botão de login
+                TextFormField(
                   controller: userController,
                   decoration: InputDecoration(
                     labelText: 'Nome de usuário',
@@ -153,13 +186,24 @@ class CadastroCliente extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10))),
                   onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
+                    if (passwordController.text == passwordConfirm.text) {
+                      // Passwords match, proceed to the next step
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
                           builder: (context) => TelaPrincipal(
-                                email: userController.text,
-                              )),
-                    );
+                            email: userController.text,
+                          ),
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Passwords do not match'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
                   },
                   child: const Text(
                     'Cadastrar',
