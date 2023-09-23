@@ -32,7 +32,8 @@ class TelaLogin extends StatelessWidget {
                     Text(
                       'Login',
                       style: TextStyle(
-                        fontSize: 32.0,
+                        fontSize: 30.0,
+                        color: AppColors.cobalt,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

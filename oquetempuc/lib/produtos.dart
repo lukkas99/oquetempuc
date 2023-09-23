@@ -1,11 +1,27 @@
 import 'package:flutter/material.dart';
-import 'principal.dart';
 import 'main.dart';
-import 'cadastroCliente.dart';
-import 'cadastroFornecedor.dart';
+import 'principal.dart';
 
-class Cadastro extends StatelessWidget {
+class Produtos extends StatefulWidget {
+  @override
+  _ProdutosState createState() => _ProdutosState();
+}
+
+class Product {
+  final String name;
+  final double preco;
+
+  Product(this.name, this.preco);
+}
+
+class _ProdutosState extends State<Produtos> {
   final _formKey = GlobalKey<FormState>();
+
+  List<Product> products = [
+    Product('Suco natural', 5.99),
+    Product('Coxinha', 5.99),
+    Product('Prato do dia', 20.99),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +46,7 @@ class Cadastro extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     Text(
-                      'Cadastro',
+                      'Produtos',
                       style: TextStyle(
                         fontSize: 30.0,
                         color: AppColors.cobalt,
@@ -55,19 +71,46 @@ class Cadastro extends StatelessWidget {
                 ),
                 SizedBox(
                     height: MediaQuery.of(context).size.height *
-                        0.1), // Espaço entre a Row e a Column
+                        0.05), // Espaço entre a Row e a Column
+                Text(
+                  'Nome do Restaurante',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: AppColors.cobalt,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(width: MediaQuery.of(context).size.width * 0.5),
+                DataTable(
+                  columns: [
+                    DataColumn(label: Text('Nome')),
+                    DataColumn(label: Text('Preço')),
+                  ],
+                  rows: products.map((product) {
+                    return DataRow(
+                      cells: [
+                        DataCell(Text(product.name)),
+                        DataCell(Text('\$${product.preco.toStringAsFixed(2)}')),
+                      ],
+                    );
+                  }).toList(),
+                ),
 
+                SizedBox(
+                    height: MediaQuery.of(context).size.height *
+                        0.15), // Espaço entre o título e os botões
+                // Botões de login
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          minimumSize: Size(155, 50),
-                          backgroundColor: AppColors.cobalt,
+                          minimumSize: Size(125, 50),
+                          backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                               side: const BorderSide(
                                   width: 2, // thickness
-                                  color: Colors.white // color
+                                  color: AppColors.cobalt // color
                                   ),
                               // border radius
                               borderRadius: BorderRadius.circular(10))),
@@ -75,25 +118,26 @@ class Cadastro extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CadastroFornecedor()),
+                              builder: (context) => TelaInicial()),
                         );
                       },
                       child: const Text(
-                        'SOU FORNECEDOR',
+                        'Logout',
                         style: TextStyle(
-                          color: Colors.white,
+                          fontSize: 13.0,
+                          color: AppColors.cobalt,
                         ),
                       ),
                     ),
                     SizedBox(width: MediaQuery.of(context).size.width * 0.1),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          minimumSize: Size(155, 50),
-                          backgroundColor: AppColors.cobalt,
+                          minimumSize: Size(125, 50),
+                          backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                               side: const BorderSide(
                                   width: 2, // thickness
-                                  color: Colors.white // color
+                                  color: AppColors.cobalt // color
                                   ),
                               // border radius
                               borderRadius: BorderRadius.circular(10))),
@@ -101,13 +145,16 @@ class Cadastro extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CadastroCliente()),
+                              builder: (context) => TelaPrincipal(
+                                    email: '',
+                                  )),
                         );
                       },
                       child: const Text(
-                        'SOU CLIENTE',
+                        'Ir para Página Principal',
                         style: TextStyle(
-                          color: Colors.white,
+                          fontSize: 13.0,
+                          color: AppColors.cobalt,
                         ),
                       ),
                     ),

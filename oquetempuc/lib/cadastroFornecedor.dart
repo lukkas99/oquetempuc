@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'principal.dart';
 import 'main.dart';
+import 'cadastroFornecedor2.dart';
 
-class CadastroCliente extends StatelessWidget {
+class CadastroFornecedor extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordConfirm = TextEditingController();
-  TextEditingController userController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +34,8 @@ class CadastroCliente extends StatelessWidget {
                     Text(
                       'Cadastro',
                       style: TextStyle(
-                        fontSize: 30.0,
                         color: AppColors.cobalt,
+                        fontSize: 30.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -154,32 +154,7 @@ class CadastroCliente extends StatelessWidget {
                 SizedBox(
                     height: MediaQuery.of(context).size.width *
                         0.05), // Espaço entre a senha e o botão de login
-                TextFormField(
-                  controller: userController,
-                  decoration: InputDecoration(
-                    labelText: 'Nome de usuário',
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(
-                        color: AppColors.cobalt,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(
-                        color: AppColors.cobalt,
-                        width: 2.0,
-                      ),
-                    ),
-                    labelStyle: TextStyle(
-                      color: AppColors
-                          .cobalt, // Defina a cor desejada para o texto do rótulo
-                    ),
-                  ),
-                ),
-                SizedBox(
-                    height: MediaQuery.of(context).size.width *
-                        0.05), // Espaço entre a senha e o botão de login
+
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       minimumSize: Size(155, 50),
@@ -192,9 +167,7 @@ class CadastroCliente extends StatelessWidget {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => TelaPrincipal(
-                            email: userController.text,
-                          ),
+                          builder: (context) => CadastroFornecedor2(),
                         ),
                       );
                     } else {
@@ -207,7 +180,7 @@ class CadastroCliente extends StatelessWidget {
                     }
                   },
                   child: const Text(
-                    'Cadastrar',
+                    'Próximo',
                     style: TextStyle(
                       color: Colors.white,
                     ),
