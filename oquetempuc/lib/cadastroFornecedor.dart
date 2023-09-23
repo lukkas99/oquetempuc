@@ -34,7 +34,8 @@ class CadastroFornecedor extends StatelessWidget {
                     Text(
                       'Cadastro',
                       style: TextStyle(
-                        fontSize: 32.0,
+                        color: AppColors.cobalt,
+                        fontSize: 30.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

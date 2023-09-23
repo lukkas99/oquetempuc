@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'principal.dart';
+import 'produtos.dart';
 import 'main.dart';
 
 class CadastroFornecedor2 extends StatefulWidget {
@@ -47,7 +47,8 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                     Text(
                       'Cadastro',
                       style: TextStyle(
-                        fontSize: 32.0,
+                        fontSize: 30.0,
+                        color: AppColors.cobalt,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -463,9 +464,6 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                           ),
                         ],
                       ),
-
-                    //  Quarta, Quinta, Sexta, Sábado
-                    // Repita o mesmo padrão para os outros dias
                   ],
                 ),
                 SizedBox(height: MediaQuery.of(context).size.width * 0.05),
@@ -479,9 +477,7 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => TelaPrincipal(
-                          email: nameController.text,
-                        ),
+                        builder: (context) => Produtos(),
                       ),
                     );
                   },
