@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'principal.dart';
 import 'main.dart';
 import 'cadastroCliente.dart';
+import 'cadastroFornecedor.dart';
 
 class Cadastro extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -70,8 +71,11 @@ class Cadastro extends StatelessWidget {
                               // border radius
                               borderRadius: BorderRadius.circular(10))),
                       onPressed: () {
-                        debugPrint('Received click');
-                        // Lógica de login para o primeiro botão
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CadastroFornecedor()),
+                        );
                       },
                       child: const Text(
                         'SOU FORNECEDOR',
