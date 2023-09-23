@@ -34,17 +34,18 @@ class CadastroCliente extends StatelessWidget {
                     Text(
                       'Cadastro',
                       style: TextStyle(
-                        fontSize: 32.0,
+                        fontSize: 30.0,
+                        color: AppColors.cobalt,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(width: MediaQuery.of(context).size.width * 0.3),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.2),
                     const ImageIcon(
                       AssetImage('assets/images/iconPrincipal.png'),
                       color: Colors.black,
                       size: 45.0,
                     ),
-                    SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.03),
                     Text(
                       'O que tem? \n PUC Coreu',
                       style: TextStyle(

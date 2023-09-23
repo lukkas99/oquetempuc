@@ -53,13 +53,13 @@ class _ProdutosState extends State<Produtos> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(width: MediaQuery.of(context).size.width * 0.3),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.2),
                     const ImageIcon(
                       AssetImage('assets/images/iconPrincipal.png'),
                       color: Colors.black,
                       size: 45.0,
                     ),
-                    SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.03),
                     Text(
                       'O que tem? \n PUC Coreu',
                       style: TextStyle(
@@ -81,7 +81,6 @@ class _ProdutosState extends State<Produtos> {
                   ),
                 ),
                 SizedBox(width: MediaQuery.of(context).size.width * 0.5),
-
                 DataTable(
                   columns: [
                     DataColumn(label: Text('Nome')),
@@ -106,7 +105,7 @@ class _ProdutosState extends State<Produtos> {
                   children: <Widget>[
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          minimumSize: Size(155, 50),
+                          minimumSize: Size(125, 50),
                           backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                               side: const BorderSide(
@@ -125,7 +124,7 @@ class _ProdutosState extends State<Produtos> {
                       child: const Text(
                         'Logout',
                         style: TextStyle(
-                          fontSize: 15.0,
+                          fontSize: 13.0,
                           color: AppColors.cobalt,
                         ),
                       ),
@@ -133,7 +132,7 @@ class _ProdutosState extends State<Produtos> {
                     SizedBox(width: MediaQuery.of(context).size.width * 0.1),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          minimumSize: Size(155, 50),
+                          minimumSize: Size(125, 50),
                           backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                               side: const BorderSide(
@@ -154,7 +153,7 @@ class _ProdutosState extends State<Produtos> {
                       child: const Text(
                         'Ir para Página Principal',
                         style: TextStyle(
-                          fontSize: 15.0,
+                          fontSize: 13.0,
                           color: AppColors.cobalt,
                         ),
                       ),
