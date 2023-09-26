@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:oquetempuc/restaurante.dart';
 import 'main.dart';
 
 class TelaPrincipal extends StatefulWidget {
@@ -34,6 +35,7 @@ class RestaurantCard extends StatelessWidget {
     return Card(
       elevation: 2.0,
       margin: EdgeInsets.all(8.0),
+      child: InkWell(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -85,6 +87,12 @@ class RestaurantCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+      onTap: (){
+        Navigator.push(
+          context, MaterialPageRoute(builder: (context) =>  TelaRestaurante( restaurant,))
+        );
+      },
       ),
     );
   }
@@ -397,7 +405,6 @@ class _TelaPrincipal extends State<TelaPrincipal> {
                   return RestaurantCard(restaurant: establishment);
                 },
               ),
-              Text(widget.email),
               Center(
                 child: ElevatedButton(
                   onPressed: () {
