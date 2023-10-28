@@ -425,7 +425,10 @@ class _TelaPrincipal extends State<TelaPrincipal> {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TelaInicial()),
+                    );
                   },
                   child: const Text("Go back!"),
                 ),

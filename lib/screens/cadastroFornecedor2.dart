@@ -10,6 +10,7 @@ class CadastroFornecedor2 extends StatefulWidget {
 class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
+  TextEditingController cepController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController serviceController = TextEditingController();
   TextEditingController urlController = TextEditingController();
@@ -105,6 +106,51 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Digite o nome do estabelecimento';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(
+                    height: MediaQuery.of(context).size.width *
+                        0.05), // Espaço entre os campos de texto
+                Text(
+                  'CEP',
+                  style: TextStyle(
+                    fontSize: 14.0,
+                    color: AppColors.cobalt,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.015), //
+                TextFormField(
+                  controller: cepController,
+                  decoration: InputDecoration(
+                    labelText: 'Digite o CEP. Somente números!',
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide(
+                        color: AppColors.cobalt,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide(
+                        color: AppColors.cobalt,
+                        width: 2.0,
+                      ),
+                    ),
+                    labelStyle: TextStyle(
+                      color: AppColors
+                          .cobalt, // Defina a cor desejada para o texto do rótulo
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'CEP inválido';
+                    }
+                    // Tente converter o valor em um número inteiro
+                    if (int.tryParse(value) == null) {
+                      return 'Digite um número válido.';
                     }
                     return null;
                   },

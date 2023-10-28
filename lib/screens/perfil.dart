@@ -92,7 +92,8 @@ class _TelaPerfil extends State<TelaPerfil> {
                     IconButton(
                       icon: Icon(Icons.home_outlined),
                       onPressed: () {
-                        // Adicione a lógica para a ação de ir para a tela inicial aqui
+                        Navigator.of(context)
+                            .pop(); // Adicione a lógica para a ação de ir para a tela inicial aqui
                       },
                     ),
                     IconButton(

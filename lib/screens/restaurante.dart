@@ -69,7 +69,7 @@ class _TelaRestaurante extends State<TelaRestaurante> {
                     IconButton(
                       icon: Icon(Icons.home_outlined),
                       onPressed: () {
-                        // Adicione a lógica para a ação de ir para a tela inicial aqui
+                        Navigator.of(context).pop();
                       },
                     ),
                     IconButton(
