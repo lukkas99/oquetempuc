@@ -12,7 +12,7 @@ class DbHelper {
   static const String DB_Name = 'BancoOQTP.db';
   static const String TableUser = 'clientes';
   static const String TableFornecedor = 'fornecedor';
-  static const int Version = 3;
+  static const int Version = 5;
 
   static const String CUserId = 'user_id';
   static const String CUserName = 'user_name';
@@ -152,6 +152,7 @@ class DbHelper {
       print("Restaurante salvo com sucesso! ID: $id");
       return id;
     } catch (e) {
+      print(e.toString());
       print("Falha ao salvar restaurante.");
     }
     return -1;

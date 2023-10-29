@@ -51,7 +51,7 @@ class _CadastroCliente extends State<CadastroCliente> {
             logged_in: 0,
           );
 
-          await dbHelper.saveData(uModel).then((userData) {
+          await dbHelper.saveUserData(uModel).then((userData) {
             alertDialog("Successfully Saved");
 
             Navigator.push(
@@ -65,7 +65,7 @@ class _CadastroCliente extends State<CadastroCliente> {
         }
       }
       //await dbHelper.deleteDB();
-      await dbHelper.readalldata();
+      await dbHelper.readAllUserData();
     }
   }
 

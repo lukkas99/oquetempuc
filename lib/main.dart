@@ -4,6 +4,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'screens/login.dart';
 import 'screens/cadastro.dart';
+import 'package:oquetempuc/db/Dbhelper.dart';
 
 class AppColors {
   static const Color cobalt = Color(0xFF000C76); // Sua cor personalizada
@@ -13,7 +14,6 @@ class AppColors {
 
 void main() {
   runApp(MaterialApp(
-
     home: TelaInicial(),
   ));
 }
@@ -24,6 +24,7 @@ class TelaInicial extends StatefulWidget {
 }
 
 class _TelaInicial extends State<TelaInicial> {
+  var dbHelper = DbHelper();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,6 +154,27 @@ class _TelaInicial extends State<TelaInicial> {
                   },
                   child: const Text(
                     'CADASTRAR',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      minimumSize: Size(155, 50),
+                      backgroundColor: AppColors.cobalt,
+                      shape: RoundedRectangleBorder(
+                          side: const BorderSide(
+                              width: 2, // thickness
+                              color: Colors.white // color
+                              ),
+                          // border radius
+                          borderRadius: BorderRadius.circular(10))),
+                  onPressed: () {
+                    dbHelper.deleteDB();
+                  },
+                  child: const Text(
+                    'apagar db',
                     style: TextStyle(
                       color: Colors.white,
                     ),

@@ -32,7 +32,7 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
   TextEditingController funcionamentoController = TextEditingController();
   bool isActive = true;
   final dbHelper = DbHelper();
-  int restauranteId = -1;
+  var restauranteId;
 
   @override
   Widget build(BuildContext context) {
@@ -386,8 +386,7 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                           );
 
                           restauranteId =
-                              dbHelper.saveFornecedorData(fornecedor) as int;
-                              
+                              dbHelper.saveFornecedorData(fornecedor);
                         }
 
                         // Próxima tela
