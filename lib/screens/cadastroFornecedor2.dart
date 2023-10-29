@@ -3,6 +3,13 @@ import 'produtos.dart';
 import '../main.dart';
 
 class CadastroFornecedor2 extends StatefulWidget {
+  final String email;
+  final String encryptedPassword;
+
+  CadastroFornecedor2({
+    required this.email,
+    required this.encryptedPassword,
+  });
   @override
   _CadastroFornecedor2State createState() => _CadastroFornecedor2State();
 }

@@ -13,6 +13,7 @@ class AppColors {
 
 void main() {
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     home: TelaInicial(),
   ));
 }

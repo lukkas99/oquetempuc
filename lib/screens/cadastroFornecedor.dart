@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../main.dart';
 import 'cadastroFornecedor2.dart';
+import 'package:oquetempuc/comm/comHelper.dart';
 
 class CadastroFornecedor extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -161,18 +162,28 @@ class CadastroFornecedor extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10))),
                   onPressed: () {
-                    if (passwordController.text == passwordConfirm.text) {
+                    final String email = emailController.text;
+                    final String password = passwordController.text;
+                    final String confirmedPassword = passwordConfirm.text;
+
+                    if (password == confirmedPassword && validateEmail(email)) {
+                      final String encryptedPassword =
+                          generateMd5(password); // encrypt password
                       // Passwords match, proceed to the next step
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CadastroFornecedor2(),
+                          builder: (context) => CadastroFornecedor2(
+                            email: email,
+                            encryptedPassword: encryptedPassword,
+                          ),
                         ),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Passwords do not match'),
+                          content:
+                              Text('Senhas são diferentes ou email inválido '),
                           duration: Duration(seconds: 2),
                         ),
                       );
