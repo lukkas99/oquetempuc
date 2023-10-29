@@ -28,7 +28,7 @@ class _TelaPerfil extends State<TelaPerfil> {
   }
 
   void getUserData() async {
-    final dbHelper = Dbhelper();
+    final dbHelper = DbHelper();
     final userId =
         userEmail; // Substitua por uma maneira de obter o ID do usuário logado
     final password = userPassword; // Substitua pela senha do usuário logado
@@ -48,7 +48,7 @@ class _TelaPerfil extends State<TelaPerfil> {
 
   // Função para fazer logout
   void logout() {
-    final dbHelper = Dbhelper(); // Crie uma instância do seu DBHelper
+    final dbHelper = DbHelper(); // Crie uma instância do seu DBHelper
     dbHelper
         .clearUserData(); // Chame a função para limpar os dados de autenticação
 

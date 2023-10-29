@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:oquetempuc/screens/perfilRestaurante.dart';
+import 'package:oquetempuc/screens/principal.dart';
 import 'produtos.dart';
 import '../main.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'dart:async';
-import 'package:oquetempuc/db/fornecedorDbHelper.dart';
+import 'package:oquetempuc/db/DbHelper.dart';
 import 'package:oquetempuc/model/fornecedor.dart';
 
 class CadastroFornecedor2 extends StatefulWidget {
@@ -29,7 +31,8 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
   int selectedRadio = 0;
   TextEditingController funcionamentoController = TextEditingController();
   bool isActive = true;
-  final dbHelper = FornecedorDbHelper();
+  final dbHelper = DbHelper();
+  int restauranteId = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -357,45 +360,113 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.width * 0.05),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      minimumSize: Size(155, 50),
-                      backgroundColor: AppColors.cobalt,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10))),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      // Crie uma instância da classe Fornecedor com os dados do formulário
-                      final fornecedor = Fornecedor(
-                        email: widget.email,
-                        encryptedPassword: widget.encryptedPassword,
-                        name: nameController.text,
-                        cep: cepController.text,
-                        address: addressController.text,
-                        service: serviceController.text,
-                        url: urlController.text,
-                        location: selectedRadio,
-                        funcionamento: funcionamentoController.text,
-                        isActive: true,
-                      );
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          minimumSize: Size(155, 50),
+                          backgroundColor: AppColors.cobalt,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          // Crie uma instância da classe Fornecedor com os dados do formulário
+                          final fornecedor = Fornecedor(
+                            email: widget.email,
+                            encryptedPassword: widget.encryptedPassword,
+                            name: nameController.text,
+                            cep: cepController.text,
+                            address: addressController.text,
+                            service: serviceController.text,
+                            url: urlController.text,
+                            location: selectedRadio,
+                            funcionamento: funcionamentoController.text,
+                            isActive: true,
+                          );
 
-                      dbHelper.saveFornecedorData(fornecedor);
-                    }
+                          restauranteId =
+                              dbHelper.saveFornecedorData(fornecedor) as int;
+                              
+                        }
 
-                    // Próxima tela
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Produtos(),
+                        // Próxima tela
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Produtos(),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        'Salvar',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
                       ),
-                    );
-                  },
-                  child: const Text(
-                    'Próximo',
-                    style: TextStyle(
-                      color: Colors.white,
                     ),
-                  ),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.1),
+                  ],
+                ),
+                SizedBox(height: MediaQuery.of(context).size.width * 0.1),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          minimumSize: Size(155, 50),
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                  width: 2, // thickness
+                                  color: AppColors.cobalt // color
+                                  ),
+                              // border radius
+                              borderRadius: BorderRadius.circular(10))),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Produtos()),
+                        );
+                      },
+                      child: const Text(
+                        'Produtos',
+                        style: TextStyle(
+                          color: AppColors.cobalt,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          minimumSize: Size(155, 50),
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                  width: 2, // thickness
+                                  color: AppColors.cobalt // color
+                                  ),
+                              // border radius
+                              borderRadius: BorderRadius.circular(10))),
+                      onPressed: () {
+                        final String name = nameController.text;
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PerfilRestaurante(
+                                  restauranteId: restauranteId)),
+                        );
+                      },
+                      child: const Text(
+                        'Perfil',
+                        style: TextStyle(
+                          color: AppColors.cobalt,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                  ],
                 ),
               ],
             ),

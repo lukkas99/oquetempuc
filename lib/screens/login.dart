@@ -22,7 +22,7 @@ class _TelaLogin extends State<TelaLogin> {
   @override
   void initState() {
     super.initState();
-    dbHelper = Dbhelper();
+    dbHelper = DbHelper();
   }
 
   login() async {

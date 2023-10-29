@@ -24,7 +24,7 @@ class _CadastroCliente extends State<CadastroCliente> {
   @override
   void initState() {
     super.initState();
-    dbHelper = Dbhelper();
+    dbHelper = DbHelper();
     // Chame essa função para obter o caminho do banco de dados
   }
 
