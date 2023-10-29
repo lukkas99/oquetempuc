@@ -39,27 +39,31 @@ class Dbhelper {
     await db.execute('''
       CREATE TABLE clientes (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nome VARCHAR,
-        email VARCHAR UNIQUE,
-        senha VARCHAR,
+        nome TEXT,
+        email TEXT UNIQUE,
+        senha TEXT,
         logged_in INTEGER
       );
       CREATE TABLE fornecedores (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nome VARCHAR,
-        email VARCHAR UNIQUE,
-        senha VARCHAR,
-        tipo VARCHAR,
-        cnpj VARCHAR,
-        endereco VARCHAR,
-        logged_in INTEGER
+        email TEXT,
+        encrypted_password TEXT,
+        name TEXT,
+        cep TEXT,
+        address TEXT,
+        service TEXT,
+        url TEXT,
+        location INTEGER,
+        funcionamento TEXT,
+        ativo INTEGER
+  
       );
       CREATE TABLE produtos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nomeProduct VARCHAR,
-        descricao VARCHAR,
-        categoria VARCHAR,
-        imagemPath VARCHAR
+        nomeProduct TEXT,
+        descricao TEXT,
+        categoria TEXT,
+        imagemPath TEXT
       );
       CREATE TABLE produtos_fornecedores (
         id INTEGER PRIMARY KEY AUTOINCREMENT,

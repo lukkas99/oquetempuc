@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'produtos.dart';
 import '../main.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
+import 'dart:async';
+import 'package:oquetempuc/db/fornecedorDbHelper.dart';
+import 'package:oquetempuc/model/fornecedor.dart';
 
 class CadastroFornecedor2 extends StatefulWidget {
   final String email;
@@ -22,13 +27,9 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
   TextEditingController serviceController = TextEditingController();
   TextEditingController urlController = TextEditingController();
   int selectedRadio = 0;
-  bool domingoChecked = false;
-  bool segundaChecked = false;
-  bool tercaChecked = false;
-  bool quartaChecked = false;
-  bool quintaChecked = false;
-  bool sextaChecked = false;
-  bool sabadoChecked = false;
+  TextEditingController funcionamentoController = TextEditingController();
+  bool isActive = true;
+  final dbHelper = FornecedorDbHelper();
 
   @override
   Widget build(BuildContext context) {
@@ -332,192 +333,28 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.015), //
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    // CheckboxListTile para Domingo
-                    CheckboxListTile(
-                      title: Text('Domingo'),
-                      value: domingoChecked,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          domingoChecked = value!;
-                        });
-                      },
-                    ),
-                    // Campos de texto para horário de funcionamento de Domingo
-                    if (domingoChecked)
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              decoration: InputDecoration(labelText: 'Início'),
-                            ),
-                          ),
-                          Expanded(
-                            child: TextFormField(
-                              decoration: InputDecoration(labelText: 'Fim'),
-                            ),
-                          ),
-                        ],
+                TextFormField(
+                  controller: funcionamentoController,
+                  decoration: InputDecoration(
+                    labelText: 'Dias e horário de funcionamento',
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide(
+                        color: AppColors.cobalt,
                       ),
-
-                    // CheckboxListTile para Segunda
-                    CheckboxListTile(
-                      title: Text('Segunda'),
-                      value: segundaChecked,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          segundaChecked = value!;
-                        });
-                      },
                     ),
-                    if (segundaChecked)
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              decoration: InputDecoration(labelText: 'Início'),
-                            ),
-                          ),
-                          Expanded(
-                            child: TextFormField(
-                              decoration: InputDecoration(labelText: 'Fim'),
-                            ),
-                          ),
-                        ],
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide(
+                        color: AppColors.cobalt,
+                        width: 2.0,
                       ),
-
-                    // CheckboxListTile para Terça
-                    CheckboxListTile(
-                      title: Text('Terça'),
-                      value: tercaChecked,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          tercaChecked = value!;
-                        });
-                      },
                     ),
-                    if (tercaChecked)
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              decoration: InputDecoration(labelText: 'Início'),
-                            ),
-                          ),
-                          Expanded(
-                            child: TextFormField(
-                              decoration: InputDecoration(labelText: 'Fim'),
-                            ),
-                          ),
-                        ],
-                      ),
-
-                    // CheckboxListTile para Quarta
-                    CheckboxListTile(
-                      title: Text('Quarta'),
-                      value: quartaChecked,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          quartaChecked = value!;
-                        });
-                      },
+                    labelStyle: TextStyle(
+                      color: AppColors
+                          .cobalt, // Defina a cor desejada para o texto do rótulo
                     ),
-                    if (quartaChecked)
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              decoration: InputDecoration(labelText: 'Início'),
-                            ),
-                          ),
-                          Expanded(
-                            child: TextFormField(
-                              decoration: InputDecoration(labelText: 'Fim'),
-                            ),
-                          ),
-                        ],
-                      ),
-
-                    // CheckboxListTile para Quinta
-                    CheckboxListTile(
-                      title: Text('Quinta'),
-                      value: quintaChecked,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          quintaChecked = value!;
-                        });
-                      },
-                    ),
-                    if (quintaChecked)
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              decoration: InputDecoration(labelText: 'Início'),
-                            ),
-                          ),
-                          Expanded(
-                            child: TextFormField(
-                              decoration: InputDecoration(labelText: 'Fim'),
-                            ),
-                          ),
-                        ],
-                      ),
-
-                    // CheckboxListTile para Sexta
-                    CheckboxListTile(
-                      title: Text('Sexta'),
-                      value: sextaChecked,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          sextaChecked = value!;
-                        });
-                      },
-                    ),
-                    if (sextaChecked)
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              decoration: InputDecoration(labelText: 'Início'),
-                            ),
-                          ),
-                          Expanded(
-                            child: TextFormField(
-                              decoration: InputDecoration(labelText: 'Fim'),
-                            ),
-                          ),
-                        ],
-                      ),
-
-                    // CheckboxListTile para Sábado
-                    CheckboxListTile(
-                      title: Text('Sábado'),
-                      value: sabadoChecked,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          sabadoChecked = value!;
-                        });
-                      },
-                    ),
-                    if (sabadoChecked)
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              decoration: InputDecoration(labelText: 'Início'),
-                            ),
-                          ),
-                          Expanded(
-                            child: TextFormField(
-                              decoration: InputDecoration(labelText: 'Fim'),
-                            ),
-                          ),
-                        ],
-                      ),
-                  ],
+                  ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.width * 0.05),
                 ElevatedButton(
@@ -527,6 +364,25 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10))),
                   onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      // Crie uma instância da classe Fornecedor com os dados do formulário
+                      final fornecedor = Fornecedor(
+                        email: widget.email,
+                        encryptedPassword: widget.encryptedPassword,
+                        name: nameController.text,
+                        cep: cepController.text,
+                        address: addressController.text,
+                        service: serviceController.text,
+                        url: urlController.text,
+                        location: selectedRadio,
+                        funcionamento: funcionamentoController.text,
+                        isActive: true,
+                      );
+
+                      dbHelper.saveFornecedorData(fornecedor);
+                    }
+
+                    // Próxima tela
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
