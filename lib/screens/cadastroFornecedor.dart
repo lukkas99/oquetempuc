@@ -174,9 +174,9 @@ class CadastroFornecedor extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => CadastroFornecedor2(
-                            email: email,
-                            encryptedPassword: encryptedPassword,
-                          ),
+                              email: email,
+                              encryptedPassword: encryptedPassword,
+                              restauranteId: -1),
                         ),
                       );
                     } else {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:oquetempuc/db/DbHelper.dart';
 import 'package:oquetempuc/main.dart';
 import 'package:oquetempuc/model/fornecedor.dart';
+import 'package:oquetempuc/screens/cadastroFornecedor2.dart';
 
 class PerfilRestaurante extends StatefulWidget {
   final int restauranteId; // O ID do restaurante passado como parâmetro
@@ -14,6 +15,7 @@ class PerfilRestaurante extends StatefulWidget {
 
 class _PerfilRestauranteState extends State<PerfilRestaurante> {
   final DbHelper dbHelper = DbHelper();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,9 +52,10 @@ class _PerfilRestauranteState extends State<PerfilRestaurante> {
                     Image.network(restaurante.url),
                     Text('Nome do restaurante: ${restaurante.name}'),
                     Text('Endereço: ${restaurante.address}'),
+                    Text('O que servimos: ${restaurante.service}'),
+                    Text('Localização: ${restaurante.location}'),
                     Text(
                         'Horário de funcionamento: ${restaurante.funcionamento}'),
-                    // ... Outras informações ...
 
                     // Botões do CRUD
                     Row(
@@ -71,7 +74,14 @@ class _PerfilRestauranteState extends State<PerfilRestaurante> {
                             ),
                           ),
                           onPressed: () {
-                            // Adicione a lógica para atualizar o restaurante aqui
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CadastroFornecedor2(
+                                  restauranteId: widget.restauranteId, email: '', encryptedPassword: '',
+                                ),
+                              ),
+                            );
                           },
                           child: const Text(
                             'Atualizar',
@@ -95,7 +105,7 @@ class _PerfilRestauranteState extends State<PerfilRestaurante> {
                             ),
                           ),
                           onPressed: () {
-                            // Adicione a lógica para desativar o restaurante aqui
+                            dbHelper.desativaFornecedor(widget.restauranteId);
                           },
                           child: const Text(
                             'Desativar',

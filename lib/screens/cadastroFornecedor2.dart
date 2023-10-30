@@ -12,10 +12,12 @@ import 'package:oquetempuc/model/fornecedor.dart';
 class CadastroFornecedor2 extends StatefulWidget {
   final String email;
   final String encryptedPassword;
+  var restauranteId;
 
   CadastroFornecedor2({
     required this.email,
     required this.encryptedPassword,
+    this.restauranteId,
   });
   @override
   _CadastroFornecedor2State createState() => _CadastroFornecedor2State();
@@ -32,7 +34,6 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
   TextEditingController funcionamentoController = TextEditingController();
   bool isActive = true;
   final dbHelper = DbHelper();
-  var restauranteId;
 
   @override
   Widget build(BuildContext context) {
@@ -385,7 +386,7 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                             isActive: true,
                           );
 
-                          restauranteId =
+                          widget.restauranteId =
                               dbHelper.saveFornecedorData(fornecedor);
                         }
 
@@ -454,7 +455,7 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => PerfilRestaurante(
-                                  restauranteId: restauranteId)),
+                                  restauranteId: widget.restauranteId)),
                         );
                       },
                       child: const Text(
