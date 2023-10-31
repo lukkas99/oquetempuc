@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:oquetempuc/db/Dbhelper.dart';
+import 'package:oquetempuc/model/fornecedor.dart';
 import 'package:oquetempuc/screens/restaurante.dart';
 import '../main.dart';
 import 'perfil.dart';
@@ -58,9 +60,10 @@ class RestaurantCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(
-              restaurant.image,
-              width: double.infinity, // Estica a imagem na largura da coluna
+            Image.network(
+              restaurant
+                  .image, // Use Image.network para carregar imagens da web
+              width: double.infinity,
               height: 150.0,
               fit: BoxFit.cover,
             ),
@@ -126,6 +129,8 @@ class _TelaPrincipal extends State<TelaPrincipal> {
   final String userPassword;
   final String userType;
   final int? restauranteId;
+  int selectedRadio = 0;
+  List<Restaurant> restaurants = [];
 
   _TelaPrincipal({
     required this.userName,
@@ -134,25 +139,39 @@ class _TelaPrincipal extends State<TelaPrincipal> {
     required this.userType,
     this.restauranteId,
   });
+
+  @override
+  void initState() {
+    super.initState();
+    loadFornecedores();
+  }
+
+  void loadFornecedores() async {
+    final dbHelper = DbHelper();
+    final fornecedores = await dbHelper.readAllFornecedoresData();
+
+    fornecedores
+        .sort((a, b) => (b.id ?? 0).compareTo(a.id ?? 0)); // Adicione ?? 0
+
+    final restaurantes = fornecedores
+        .map((fornecedor) => Restaurant(
+              name: fornecedor.name,
+              image: fornecedor.url,
+              rating: 4.5,
+              description: fornecedor.service,
+              location:
+                  fornecedor.location == 1 ? 'Dentro da PUC' : 'Fora da PUC',
+            ))
+        .toList();
+
+    setState(() {
+      restaurants.clear();
+      restaurants.addAll(restaurantes);
+    });
+  }
+
   bool isSearchVisible = false;
-  int selectedRadio = 0;
-  final List<Restaurant> restaurants = [
-    Restaurant(
-      name: "Restaurante 1",
-      image: "assets/images/logoRes1.png",
-      rating: 4.5,
-      description: "Comida deliciosa",
-      location: "Endereço 1",
-    ),
-    Restaurant(
-      name: "Restaurante 2",
-      image: "assets/images/logoRes2.png",
-      rating: 4.0,
-      description: "Ótimos pratos",
-      location: "Endereço 2",
-    ),
-    // Adicione mais restaurantes conforme necessário
-  ];
+
   void toggleSearchVisibility() {
     setState(() {
       isSearchVisible = !isSearchVisible;
@@ -169,7 +188,7 @@ class _TelaPrincipal extends State<TelaPrincipal> {
     return Column(
       children: <Widget>[
         Align(
-          alignment: Alignment.topCenter, // Alinhe o ClipRRect ao topo
+          alignment: Alignment.topCenter,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10.0),
             child: Container(
@@ -232,9 +251,7 @@ class _TelaPrincipal extends State<TelaPrincipal> {
           child: Column(
             children: <Widget>[
               Container(
-                // Envolve a Row com um Container
-                color: Colors
-                    .white, // Define a cor de fundo da Row como transparente
+                color: Colors.white,
                 padding: EdgeInsets.only(
                     top: 40, left: 15.0, right: 15.0, bottom: 15.0),
                 child: Row(
@@ -252,7 +269,7 @@ class _TelaPrincipal extends State<TelaPrincipal> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Spacer(), // Espaço flexível para empurrar os ícones para a direita
+                    Spacer(),
                     IconButton(
                       icon: Icon(Icons.search),
                       onPressed: () {
@@ -269,7 +286,6 @@ class _TelaPrincipal extends State<TelaPrincipal> {
                       icon: Icon(Icons.person_outline),
                       onPressed: () {
                         if (userType == "cliente") {
-                          // Navegar para o perfil do cliente
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -281,7 +297,6 @@ class _TelaPrincipal extends State<TelaPrincipal> {
                             ),
                           );
                         } else if (userType == "fornecedor") {
-                          // Navegar para o perfil do fornecedor
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -341,33 +356,28 @@ class _TelaPrincipal extends State<TelaPrincipal> {
                               setState(() {
                                 selectedRadio = value!;
                               });
-                              // Lógica para lidar com a seleção do checkbox
                             },
-                            activeColor: AppColors
-                                .cobalt, // Cor da bolinha quando selecionado
+                            activeColor: AppColors.cobalt,
                           ),
                           Text('Dentro do campus'),
                           Radio(
                             value: 2,
-                            groupValue:
-                                selectedRadio, // Valor atualmente selecionado
+                            groupValue: selectedRadio,
                             onChanged: (int? value) {
                               setState(() {
                                 selectedRadio = value!;
                               });
-                              // Lógica para lidar com a seleção do checkbox
                             },
-                            activeColor: AppColors
-                                .cobalt, // Cor da bolinha quando selecionado
+                            activeColor: AppColors.cobalt,
                           ),
                           Text('Perto do campus'),
                         ],
                       ),
                       SizedBox(height: 16.0),
                       Divider(
-                        color: Colors.white, // Cor do divisor
-                        thickness: 1.0, // Espessura do divisor
-                        height: 20, // Altura do espaço do divisor
+                        color: Colors.white,
+                        thickness: 1.0,
+                        height: 20,
                       ),
                       // Aqui você pode adicionar os resultados
                     ],
@@ -382,8 +392,7 @@ class _TelaPrincipal extends State<TelaPrincipal> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Padding(
-                    padding:
-                        EdgeInsets.only(left: 16.0), // Espaçamento à esquerda
+                    padding: EdgeInsets.only(left: 16.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -397,7 +406,6 @@ class _TelaPrincipal extends State<TelaPrincipal> {
                     ),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.width * 0.05),
-                  // Outros widgets abaixo do Text
                   Row(
                     children: <Widget>[
                       Expanded(
@@ -441,13 +449,12 @@ class _TelaPrincipal extends State<TelaPrincipal> {
                   ),
                   SizedBox(height: MediaQuery.of(context).size.width * 0.05),
                   Divider(
-                    color: Colors.white, // Cor do divisor
-                    thickness: 1.0, // Espessura do divisor
-                    height: 20, // Altura do espaço do divisor
+                    color: Colors.white,
+                    thickness: 1.0,
+                    height: 20,
                   ),
                   Padding(
-                    padding:
-                        EdgeInsets.only(left: 16.0), // Espaçamento à esquerda
+                    padding: EdgeInsets.only(left: 16.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -462,19 +469,18 @@ class _TelaPrincipal extends State<TelaPrincipal> {
                   ),
                 ],
               ),
+
               // Espaço entre appBar personalizada e o conteúdo abaixo
               SizedBox(height: MediaQuery.of(context).size.width * 0.05),
-              // Adicione a lista de estabelecimentos aqui
-              ListView.builder(
-                physics: ScrollPhysics(),
-                shrinkWrap: true, // Para evitar rolagem infinita
-                itemCount: restaurants
-                    .length, // Substitua pela sua lista de estabelecimentos
-                itemBuilder: (BuildContext context, int index) {
-                  final establishment = restaurants[index];
-                  return RestaurantCard(restaurant: establishment);
-                },
+
+              // LOCAL ONDE VAI MOSTRAR OS RESTAURANTES
+              // Exibe a lista de restaurantes
+              Column(
+                children: restaurants
+                    .map((restaurant) => RestaurantCard(restaurant: restaurant))
+                    .toList(),
               ),
+
               Center(
                 child: ElevatedButton(
                   onPressed: () {
