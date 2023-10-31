@@ -124,6 +124,11 @@ class _TelaPerfil extends State<TelaPerfil> {
                         ],
                       ),
                     ),
+                    Divider(
+                      color: Colors.white, // Cor do divisor
+                      thickness: 1.0, // Espessura do divisor
+                      height: 20, // Altura do espaço do divisor
+                    ),
                     ElevatedButton(
                       onPressed: logout,
                       child: Text('Logout'),

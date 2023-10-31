@@ -274,6 +274,7 @@ class _TelaLogin extends State<TelaLogin> {
                           color: AppColors.cobalt,
                         ),
                       ),
+                      obscureText: true,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your password';

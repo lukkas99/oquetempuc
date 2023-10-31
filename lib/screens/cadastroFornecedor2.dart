@@ -406,14 +406,21 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                       onPressed: () async {
                         final fornecedorData = await cadastrarFornecedor();
                         if (fornecedorData != -1) {
-                          alertDialog("Successfully Saved");
-
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Restaurante salvo com sucesso!"),
+                            ),
+                          );
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (_) => TelaLogin()),
                           );
                         } else {
-                          alertDialog("Error: Data Save Fail");
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Erro: Falha ao salvar os dados"),
+                            ),
+                          );
                         }
                       },
                       child: const Text(
@@ -424,66 +431,6 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                       ),
                     ),
                     SizedBox(width: MediaQuery.of(context).size.width * 0.1),
-                  ],
-                ),
-                SizedBox(height: MediaQuery.of(context).size.width * 0.1),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          minimumSize: Size(155, 50),
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                  width: 2, // thickness
-                                  color: AppColors.cobalt // color
-                                  ),
-                              // border radius
-                              borderRadius: BorderRadius.circular(10))),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Produtos()),
-                        );
-                      },
-                      child: const Text(
-                        'Produtos',
-                        style: TextStyle(
-                          color: AppColors.cobalt,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          minimumSize: Size(155, 50),
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                  width: 2, // thickness
-                                  color: AppColors.cobalt // color
-                                  ),
-                              // border radius
-                              borderRadius: BorderRadius.circular(10))),
-                      onPressed: () {
-                        final String name = nameController.text;
-
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PerfilRestaurante(
-                                  restauranteId: widget.restauranteId)),
-                        );
-                      },
-                      child: const Text(
-                        'Perfil',
-                        style: TextStyle(
-                          color: AppColors.cobalt,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: MediaQuery.of(context).size.width * 0.05),
                   ],
                 ),
               ],

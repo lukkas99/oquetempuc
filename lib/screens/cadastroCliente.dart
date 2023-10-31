@@ -174,6 +174,7 @@ class _CadastroCliente extends State<CadastroCliente> {
                           .cobalt, // Defina a cor desejada para o texto do rótulo
                     ),
                   ),
+                  obscureText: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your password';
@@ -206,6 +207,7 @@ class _CadastroCliente extends State<CadastroCliente> {
                           .cobalt, // Defina a cor desejada para o texto do rótulo
                     ),
                   ),
+                  obscureText: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your password';

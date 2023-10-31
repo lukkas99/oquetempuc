@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../main.dart';
 import 'principal.dart';
+import 'dart:convert';
 
 class Produtos extends StatefulWidget {
+  final int restauranteId;
+  Produtos({required this.restauranteId});
+
   @override
   _ProdutosState createState() => _ProdutosState();
 }
@@ -10,20 +15,49 @@ class Produtos extends StatefulWidget {
 class Product {
   final String name;
   final double preco;
+  final String description;
+  final String category;
+  final String image;
 
-  Product(this.name, this.preco);
+  Product(this.name, this.preco, this.description, this.category, this.image);
 }
 
 class _ProdutosState extends State<Produtos> {
   final _formKey = GlobalKey<FormState>();
 
-  List<Product> products = [
-    Product('Suco natural', 5.99),
-    Product('Coxinha', 5.99),
-    Product('Prato do dia', 20.99),
-  ];
+  List<Product> products = [];
+
+  Future<void> loadProductsFromJson() async {
+    try {
+      final productJsonString =
+          await rootBundle.loadString('assets/data/produtos.json');
+      final List<dynamic> productJsonList = json.decode(productJsonString);
+
+      final List<Product> loadedProducts = productJsonList.map((json) {
+        return Product(
+          json['name'],
+          json['price'],
+          json['description'],
+          json['category'],
+          json['image'],
+        );
+      }).toList();
+
+      setState(() {
+        products = loadedProducts;
+      });
+    } catch (e) {
+      // Trate erros de carregamento de JSON
+      print('Erro ao carregar produtos: $e');
+    }
+  }
 
   @override
+  void initState() {
+    super.initState();
+    loadProductsFromJson();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -42,7 +76,6 @@ class _ProdutosState extends State<Produtos> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                 Row(
                   children: <Widget>[
                     Text(
@@ -81,19 +114,24 @@ class _ProdutosState extends State<Produtos> {
                   ),
                 ),
                 SizedBox(width: MediaQuery.of(context).size.width * 0.5),
-                DataTable(
-                  columns: [
-                    DataColumn(label: Text('Nome')),
-                    DataColumn(label: Text('Preço')),
-                  ],
-                  rows: products.map((product) {
-                    return DataRow(
-                      cells: [
-                        DataCell(Text(product.name)),
-                        DataCell(Text('\$${product.preco.toStringAsFixed(2)}')),
-                      ],
-                    );
-                  }).toList(),
+                Container(
+                  height: 500, // Defina a altura desejada aqui
+                  child: ListView.builder(
+                    itemCount: products.length,
+                    itemBuilder: (context, index) {
+                      final product = products[index];
+                      return ListTile(
+                        title: Text(product.name),
+                        subtitle: Text('\$${product.preco.toStringAsFixed(2)}'),
+                        leading: Image.asset(product.image),
+                        onTap: () {
+                          // Adicione o produto ao restaurante aqui
+                          // Você pode usar uma função ou método para fazer isso
+                          // por exemplo: addToRestaurant(product);
+                        },
+                      );
+                    },
+                  ),
                 ),
 
                 SizedBox(
