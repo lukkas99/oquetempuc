@@ -5,7 +5,7 @@ import 'package:oquetempuc/screens/cadastroFornecedor2.dart';
 import 'package:supabase/supabase.dart';
 
 class PerfilRestaurante extends StatefulWidget {
-  var restauranteId; // O ID do restaurante passado como parâmetro
+  final int restauranteId; // O ID do restaurante passado como parâmetro
 
   PerfilRestaurante({required this.restauranteId});
 
@@ -73,6 +73,7 @@ class _PerfilRestauranteState extends State<PerfilRestaurante> {
 
   @override
   Widget build(BuildContext context) {
+    print("Print antes da busca do id $widget.restauranteId");
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent, // Define o fundo como transparente

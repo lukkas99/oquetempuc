@@ -37,6 +37,35 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
   TextEditingController funcionamentoController = TextEditingController();
   bool isActive = true;
 
+  Future<void> saveAndPrintFornecedores() async {
+    if (_formKey.currentState!.validate()) {
+      // Crie uma instância da classe Fornecedor com os dados do formulário
+      final fornecedor = Fornecedor(
+        email: widget.email,
+        encryptedPassword: widget.encryptedPassword,
+        name: nameController.text,
+        cep: cepController.text,
+        address: addressController.text,
+        service: serviceController.text,
+        url: urlController.text,
+        location: selectedRadio,
+        funcionamento: funcionamentoController.text,
+        isActive: true,
+      );
+
+      // widget.restauranteId = await dbHelper.saveFornecedorData(fornecedor);
+
+      // List<Fornecedor> fornecedores = await dbHelper.readAllFornecedoresData();
+      // Itere pela lista de fornecedores e imprima seus dados
+      /*for (var fornecedor in fornecedores) {
+        print('Nome: ${fornecedor.name}');
+        print('CEP: ${fornecedor.cep}');
+        print('Endereço: ${fornecedor.address}');
+        print('Está ativo?: ${fornecedor.isActive}');
+      }*/
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -439,6 +468,70 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                       ),
                     ),
                     SizedBox(width: MediaQuery.of(context).size.width * 0.1),
+                  ],
+                ),
+                SizedBox(height: MediaQuery.of(context).size.width * 0.1),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          minimumSize: Size(155, 50),
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                  width: 2, // thickness
+                                  color: AppColors.cobalt // color
+                                  ),
+                              // border radius
+                              borderRadius: BorderRadius.circular(10))),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Produtos(
+                                    restauranteId: 1000,
+                                  )),
+                        );
+                      },
+                      child: const Text(
+                        'Produtos',
+                        style: TextStyle(
+                          color: AppColors.cobalt,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          minimumSize: Size(155, 50),
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                  width: 2, // thickness
+                                  color: AppColors.cobalt // color
+                                  ),
+                              // border radius
+                              borderRadius: BorderRadius.circular(10))),
+                      onPressed: () {
+                        final String name = nameController.text;
+                        final int id = widget.restauranteId;
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  PerfilRestaurante(restauranteId: id)),
+                        );
+                      },
+                      child: const Text(
+                        'Perfil',
+                        style: TextStyle(
+                          color: AppColors.cobalt,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.05),
                   ],
                 ),
               ],
