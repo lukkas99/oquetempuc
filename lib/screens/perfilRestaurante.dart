@@ -5,7 +5,7 @@ import 'package:oquetempuc/screens/cadastroFornecedor2.dart';
 import 'package:supabase/supabase.dart';
 
 class PerfilRestaurante extends StatefulWidget {
-  final int restauranteId; // O ID do restaurante passado como parâmetro
+  var restauranteId; // O ID do restaurante passado como parâmetro
 
   PerfilRestaurante({required this.restauranteId});
 
