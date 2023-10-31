@@ -1,0 +1,106 @@
+[
+    {
+        "id": 1,
+        "name": "Hamburguer",
+        "description": "Delicioso hamburguer com alface, queijo e tomate.",
+        "price": 8.99,
+        "category": "Lanches",
+        "image": "assets/images/hamburguer.jpg"
+    },
+    {
+        "id": 2,
+        "name": "Batata Frita",
+        "description": "Batata frita crocante com molho especial.",
+        "price": 3.99,
+        "category": "Acompanhamentos",
+        "image": "assets/images/batata_frita.jpg"
+    },
+    {
+        "id": 3,
+        "name": "Pizza Margherita",
+        "description": "Pizza de mussarela, tomate e manjericão.",
+        "price": 12.99,
+        "category": "Pizzas",
+        "image": "assets/images/pizza_margherita.jpg"
+    },
+    {
+        "id": 4,
+        "name": "Refrigerante",
+        "description": "Bebida refrescante em lata.",
+        "price": 1.99,
+        "category": "Bebidas",
+        "image": "assets/images/refrigerante.jpg"
+    },
+    {
+        "id": 5,
+        "name": "Salada Caesar",
+        "description": "Salada de alface, croutons e molho Caesar.",
+        "price": 6.99,
+        "category": "Saladas",
+        "image": "assets/images/salada_caesar.jpg"
+    },
+    {
+        "id": 6,
+        "name": "Pastel",
+        "description": "Pastel recheado com diversos sabores.",
+        "price": 4.99,
+        "category": "Salgados",
+        "image": "assets/images/pastel.jpg"
+    },
+    {
+        "id": 7,
+        "name": "Pão de Queijo",
+        "description": "Pão de queijo quentinho e saboroso.",
+        "price": 2.49,
+        "category": "Salgados",
+        "image": "assets/images/pao_de_queijo.jpg"
+    },
+    {
+        "id": 8,
+        "name": "Prato Executivo",
+        "description": "Prato executivo com acompanhamentos variados.",
+        "price": 15.99,
+        "category": "Pratos Principais",
+        "image": "assets/images/prato_executivo.jpg"
+    },
+    {
+        "id": 9,
+        "name": "Cachorro-Quente",
+        "description": "Cachorro-quente com salsicha, molhos e condimentos.",
+        "price": 4.99,
+        "category": "Lanches",
+        "image": "assets/images/cachorroquente.jpg"
+    },
+    {
+        "id": 10,
+        "name": "Água",
+        "description": "Garrafa de água mineral.",
+        "price": 1.49,
+        "category": "Bebidas",
+        "image": "assets/images/agua.jpg"
+    },
+    {
+        "id": 11,
+        "name": "Coxinha",
+        "description": "Coxinha deliciosa e crocante.",
+        "price": 3.99,
+        "category": "Salgados",
+        "image": "assets/images/coxinha.jpg"
+    },
+    {
+        "id": 12,
+        "name": "Açaí",
+        "description": "Açaí cremoso com frutas e acompanhamentos.",
+        "price": 7.99,
+        "category": "Sobremesas",
+        "image": "assets/images/acai.jpg"
+    },
+    {
+        "id": 13,
+        "name": "Macarrão à Bolonhesa",
+        "description": "Macarrão com molho à bolonhesa e queijo ralado.",
+        "price": 9.99,
+        "category": "Pratos Principais",
+        "image": "assets/images/macarrao_bolonhesa.jpg"
+    }
+]
