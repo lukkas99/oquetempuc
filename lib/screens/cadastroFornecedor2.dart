@@ -96,16 +96,15 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent, // Define o fundo como transparente
-        elevation: 0, // Remove a sombra da AppBar
-        iconTheme: IconThemeData(
-            size: 32.0,
-            color: Colors.black), // Define a cor do ícone como preto
-        title: null, // Define o título como nulo para remover o texto
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
+      body: Container(
+        constraints: BoxConstraints.expand(),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/Entradapucminas.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: SingleChildScrollView(
           padding: EdgeInsets.all(15.0),
           child: Form(
             key: _formKey,
@@ -126,7 +125,7 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                     SizedBox(width: MediaQuery.of(context).size.width * 0.2),
                     const ImageIcon(
                       AssetImage('assets/images/iconPrincipal.png'),
-                      color: Colors.black,
+                      color: AppColors.cobalt,
                       size: 45.0,
                     ),
                     SizedBox(width: MediaQuery.of(context).size.width * 0.03),
@@ -154,7 +153,10 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                 TextFormField(
                   controller: nameController,
                   decoration: InputDecoration(
-                    labelText: 'Digite o nome do estabelecimento',
+                    labelText: 'Digite o nome do estabelecimento  ',
+                    filled: true, // Preenche o fundo com a cor especificada
+                    fillColor: Color.fromRGBO(
+                        255, 255, 255, 0.8), // Branco com 50% de transparência
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(
@@ -169,8 +171,7 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                       ),
                     ),
                     labelStyle: TextStyle(
-                      color: AppColors
-                          .cobalt, // Defina a cor desejada para o texto do rótulo
+                      color: AppColors.cobalt,
                     ),
                   ),
                   validator: (value) {
@@ -195,7 +196,10 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                 TextFormField(
                   controller: cepController,
                   decoration: InputDecoration(
-                    labelText: 'Digite o CEP. Somente números!',
+                    labelText: 'Digite o CEP(Ex: 30535-000))',
+                    filled: true, // Preenche o fundo com a cor especificada
+                    fillColor: Color.fromRGBO(
+                        255, 255, 255, 0.8), // Branco com 50% de transparência
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(
@@ -210,8 +214,7 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                       ),
                     ),
                     labelStyle: TextStyle(
-                      color: AppColors
-                          .cobalt, // Defina a cor desejada para o texto do rótulo
+                      color: AppColors.cobalt,
                     ),
                   ),
                   validator: (value) {
@@ -240,7 +243,10 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                 TextFormField(
                   controller: addressController,
                   decoration: InputDecoration(
-                    labelText: 'Rua, Número, Bairro',
+                    labelText: 'Rua, número, bairro, cidade',
+                    filled: true, // Preenche o fundo com a cor especificada
+                    fillColor: Color.fromRGBO(
+                        255, 255, 255, 0.8), // Branco com 50% de transparência
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(
@@ -255,8 +261,7 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                       ),
                     ),
                     labelStyle: TextStyle(
-                      color: AppColors
-                          .cobalt, // Defina a cor desejada para o texto do rótulo
+                      color: AppColors.cobalt,
                     ),
                   ),
                   validator: (value) {
@@ -281,7 +286,10 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                 TextFormField(
                   controller: serviceController,
                   decoration: InputDecoration(
-                    labelText: 'Suco natural, salgados...',
+                    labelText: 'Suco, salgados...',
+                    filled: true, // Preenche o fundo com a cor especificada
+                    fillColor: Color.fromRGBO(
+                        255, 255, 255, 0.8), // Branco com 50% de transparência
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(
@@ -296,8 +304,7 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                       ),
                     ),
                     labelStyle: TextStyle(
-                      color: AppColors
-                          .cobalt, // Defina a cor desejada para o texto do rótulo
+                      color: AppColors.cobalt,
                     ),
                   ),
                 ),
@@ -317,6 +324,9 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                   controller: urlController,
                   decoration: InputDecoration(
                     labelText: 'URL da logo',
+                    filled: true, // Preenche o fundo com a cor especificada
+                    fillColor: Color.fromRGBO(
+                        255, 255, 255, 0.8), // Branco com 50% de transparência
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(
@@ -331,8 +341,7 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                       ),
                     ),
                     labelStyle: TextStyle(
-                      color: AppColors
-                          .cobalt, // Defina a cor desejada para o texto do rótulo
+                      color: AppColors.cobalt,
                     ),
                   ),
                 ),
@@ -363,7 +372,14 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                           activeColor: AppColors
                               .cobalt, // Cor da bolinha quando selecionado
                         ),
-                        Text('Dentro da PUC Coração Eucarìstico'),
+                        Text(
+                          'Dentro da PUC Coração Eucarìstico',
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            color: AppColors.cobalt,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ],
                     ),
                     Row(
@@ -380,7 +396,14 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                           activeColor: AppColors
                               .cobalt, // Cor da bolinha quando selecionado
                         ),
-                        Text('Fora da PUC Coração Eucarìstico'),
+                        Text(
+                          'Fora da PUC Coração Eucarìstico',
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            color: AppColors.cobalt,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -398,7 +421,10 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                 TextFormField(
                   controller: funcionamentoController,
                   decoration: InputDecoration(
-                    labelText: 'Dias e horário de funcionamento',
+                    labelText: 'Dias e horários de funcionamento',
+                    filled: true, // Preenche o fundo com a cor especificada
+                    fillColor: Color.fromRGBO(
+                        255, 255, 255, 0.8), // Branco com 50% de transparência
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(
@@ -413,8 +439,7 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                       ),
                     ),
                     labelStyle: TextStyle(
-                      color: AppColors
-                          .cobalt, // Defina a cor desejada para o texto do rótulo
+                      color: AppColors.cobalt,
                     ),
                   ),
                 ),

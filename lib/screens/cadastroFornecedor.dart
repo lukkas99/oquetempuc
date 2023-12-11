@@ -51,16 +51,15 @@ class _CadastroFornecedor extends State<CadastroFornecedor> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent, // Define o fundo como transparente
-        elevation: 0, // Remove a sombra da AppBar
-        iconTheme: IconThemeData(
-            size: 32.0,
-            color: Colors.black), // Define a cor do ícone como preto
-        title: null, // Define o título como nulo para remover o texto
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
+      body: Container(
+        constraints: BoxConstraints.expand(),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/Entradapucminas.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: SingleChildScrollView(
           padding: EdgeInsets.all(15.0),
           child: Form(
             key: _formKey,
@@ -81,7 +80,7 @@ class _CadastroFornecedor extends State<CadastroFornecedor> {
                     SizedBox(width: MediaQuery.of(context).size.width * 0.2),
                     const ImageIcon(
                       AssetImage('assets/images/iconPrincipal.png'),
-                      color: Colors.black,
+                      color: AppColors.cobalt,
                       size: 45.0,
                     ),
                     SizedBox(width: MediaQuery.of(context).size.width * 0.03),
@@ -101,6 +100,9 @@ class _CadastroFornecedor extends State<CadastroFornecedor> {
                   controller: emailController,
                   decoration: InputDecoration(
                     labelText: 'Email',
+                    filled: true, // Preenche o fundo com a cor especificada
+                    fillColor: Color.fromRGBO(
+                        255, 255, 255, 0.8), // Branco com 50% de transparência
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(
@@ -115,8 +117,7 @@ class _CadastroFornecedor extends State<CadastroFornecedor> {
                       ),
                     ),
                     labelStyle: TextStyle(
-                      color: AppColors
-                          .cobalt, // Defina a cor desejada para o texto do rótulo
+                      color: AppColors.cobalt,
                     ),
                   ),
                   validator: (value) {
@@ -133,6 +134,9 @@ class _CadastroFornecedor extends State<CadastroFornecedor> {
                   controller: passwordController,
                   decoration: InputDecoration(
                     labelText: 'Senha',
+                    filled: true, // Preenche o fundo com a cor especificada
+                    fillColor: Color.fromRGBO(
+                        255, 255, 255, 0.8), // Branco com 50% de transparência
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(
@@ -147,8 +151,7 @@ class _CadastroFornecedor extends State<CadastroFornecedor> {
                       ),
                     ),
                     labelStyle: TextStyle(
-                      color: AppColors
-                          .cobalt, // Defina a cor desejada para o texto do rótulo
+                      color: AppColors.cobalt,
                     ),
                   ),
                   obscureText: true,
@@ -165,7 +168,10 @@ class _CadastroFornecedor extends State<CadastroFornecedor> {
                 TextFormField(
                   controller: passwordConfirm,
                   decoration: InputDecoration(
-                    labelText: 'Confirme sua senha',
+                    labelText: 'Confirme sua Senha!',
+                    filled: true, // Preenche o fundo com a cor especificada
+                    fillColor: Color.fromRGBO(
+                        255, 255, 255, 0.8), // Branco com 50% de transparência
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(
@@ -180,8 +186,7 @@ class _CadastroFornecedor extends State<CadastroFornecedor> {
                       ),
                     ),
                     labelStyle: TextStyle(
-                      color: AppColors
-                          .cobalt, // Defina a cor desejada para o texto do rótulo
+                      color: AppColors.cobalt,
                     ),
                   ),
                   obscureText: true,
