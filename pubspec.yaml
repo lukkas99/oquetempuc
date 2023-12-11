@@ -40,6 +40,8 @@ dependencies:
   shared_preferences: ^2.2.2
   toast: ^0.3.0
   crypto: ^3.0.3
+  supabase_flutter: ^1.10.25
+  jwt_decode: ^0.3.1
 
 dev_dependencies:
   flutter_test:

@@ -6,59 +6,37 @@ import 'package:oquetempuc/model/clientmodel.dart';
 class TelaPerfil extends StatefulWidget {
   final String userEmail;
   final String userPassword;
-  TelaPerfil({required this.userEmail, required this.userPassword});
+  final String userName;
+
+  TelaPerfil(
+      {required this.userEmail,
+      required this.userPassword,
+      required this.userName});
 
   @override
-  _TelaPerfil createState() =>
-      _TelaPerfil(userEmail: userEmail, userPassword: userPassword);
+  _TelaPerfilState createState() => _TelaPerfilState();
 }
 
-class _TelaPerfil extends State<TelaPerfil> {
-  final String userEmail;
-  final String userPassword;
-
-  _TelaPerfil({required this.userEmail, required this.userPassword});
+class _TelaPerfilState extends State<TelaPerfil> {
   clientmodel? _user;
 
   @override
   void initState() {
     super.initState();
-    // Recupere os dados do usuário do banco de dados local
-    getUserData();
-  }
-
-  void getUserData() async {
-    final dbHelper = DbHelper();
-    final userId =
-        userEmail; // Substitua por uma maneira de obter o ID do usuário logado
-    final password = userPassword; // Substitua pela senha do usuário logado
-    print('userId: $userId, password: $password)');
-
-    final user = await dbHelper.getLoginUser(userId, password);
-
-    if (user != null) {
-      setState(() {
-        _user = user;
-      });
-      print('Usuário logado: ${user.client_nome}, ${user.client_email}');
-    } else {
-      print('Login falhou. Usuário não encontrado.');
-    }
   }
 
   // Função para fazer logout
-  void logout() {
-    final dbHelper = DbHelper(); // Crie uma instância do seu DBHelper
-    dbHelper
-        .clearUserData(); // Chame a função para limpar os dados de autenticação
+  Future<void> logout() async {
+    await supabase.auth.signOut();
 
-    // Navegue para a tela de login ou outra tela inicial
     Navigator.of(context).pushReplacement(MaterialPageRoute(
       builder: (context) => TelaInicial(), // Substitua por sua tela de login
     ));
   }
 
   Widget build(BuildContext context) {
+    print('userNome: ${widget.userName}');
+
     return Scaffold(
       body: Container(
         color: AppColors.snow,
@@ -106,35 +84,35 @@ class _TelaPerfil extends State<TelaPerfil> {
                 ),
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-              if (_user != null)
-                Column(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      margin: EdgeInsets.all(16.0),
-                      padding: EdgeInsets.all(16.0),
-                      child: Column(
-                        children: [
-                          Text('Nome: ${_user!.client_nome}'),
-                          SizedBox(height: 8.0),
-                          Text('Email: ${_user!.client_email}'),
-                        ],
-                      ),
+              Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(10.0),
                     ),
-                    Divider(
-                      color: Colors.white, // Cor do divisor
-                      thickness: 1.0, // Espessura do divisor
-                      height: 20, // Altura do espaço do divisor
+                    margin: EdgeInsets.all(16.0),
+                    padding: EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+                        Text('Nome: ${_user?.client_nome ?? widget.userName}'),
+                        Text('Email: ${widget.userEmail}'),
+                        SizedBox(height: 8.0),
+                        // Outros campos, se houver
+                      ],
                     ),
-                    ElevatedButton(
-                      onPressed: logout,
-                      child: Text('Logout'),
-                    ),
-                  ],
-                ),
+                  ),
+                  Divider(
+                    color: Colors.white, // Cor do divisor
+                    thickness: 1.0, // Espessura do divisor
+                    height: 20, // Altura do espaço do divisor
+                  ),
+                  ElevatedButton(
+                    onPressed: logout,
+                    child: Text('Logout'),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

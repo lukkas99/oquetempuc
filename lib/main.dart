@@ -5,6 +5,7 @@ import 'package:path/path.dart';
 import 'screens/login.dart';
 import 'screens/cadastro.dart';
 import 'package:oquetempuc/db/Dbhelper.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AppColors {
   static const Color cobalt = Color(0xFF000C76); // Sua cor personalizada
@@ -12,11 +13,21 @@ class AppColors {
       Color.fromARGB(255, 237, 237, 237); // Sua cor personalizada
 }
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Supabase.initialize(
+    url: 'https://bzvujouhkefuafxunovd.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ6dnVqb3Voa2VmdWFmeHVub3ZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTkzNjU1MzIsImV4cCI6MjAxNDk0MTUzMn0.UXgwmqMwMPYpIR29F0FX0huT1G0F8m5xVcFy0NKs54I',
+    authFlowType: AuthFlowType.pkce,
+  );
   runApp(MaterialApp(
     home: TelaInicial(),
   ));
 }
+
+final supabase = Supabase.instance.client;
 
 class TelaInicial extends StatefulWidget {
   @override
@@ -24,7 +35,6 @@ class TelaInicial extends StatefulWidget {
 }
 
 class _TelaInicial extends State<TelaInicial> {
-  var dbHelper = DbHelper();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,7 +105,8 @@ class _TelaInicial extends State<TelaInicial> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => TelaPrincipal(
-                                    userEmail: 'nome',
+                                    userName: 'nome',
+                                    userEmail: 'mail',
                                     userPassword: '555',
                                     userType: 'cliente',
                                   )),
@@ -155,49 +166,6 @@ class _TelaInicial extends State<TelaInicial> {
                   },
                   child: const Text(
                     'CADASTRAR',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      minimumSize: Size(155, 50),
-                      backgroundColor: AppColors.cobalt,
-                      shape: RoundedRectangleBorder(
-                          side: const BorderSide(
-                              width: 2, // thickness
-                              color: Colors.white // color
-                              ),
-                          // border radius
-                          borderRadius: BorderRadius.circular(10))),
-                  onPressed: () {
-                    dbHelper.deleteDB();
-                  },
-                  child: const Text(
-                    'apagar db',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.2),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      minimumSize: Size(155, 50),
-                      backgroundColor: AppColors.cobalt,
-                      shape: RoundedRectangleBorder(
-                          side: const BorderSide(
-                              width: 2, // thickness
-                              color: Colors.white // color
-                              ),
-                          // border radius
-                          borderRadius: BorderRadius.circular(10))),
-                  onPressed: () {
-                    dbHelper.readAllData();
-                  },
-                  child: const Text(
-                    'read db',
                     style: TextStyle(
                       color: Colors.white,
                     ),

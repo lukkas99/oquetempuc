@@ -5,19 +5,22 @@ import 'perfil.dart';
 import 'perfilRestaurante.dart';
 
 class TelaPrincipal extends StatefulWidget {
+  final String userName;
   final String userEmail;
   final String userPassword;
   final String userType;
   final int? restauranteId;
 
   TelaPrincipal(
-      {required this.userEmail,
+      {required this.userName,
+      required this.userEmail,
       required this.userPassword,
       required this.userType,
       this.restauranteId});
 
   @override
   _TelaPrincipal createState() => _TelaPrincipal(
+        userName: userName,
         userEmail: userEmail,
         userPassword: userPassword,
         userType: userType,
@@ -118,12 +121,14 @@ class RestaurantCard extends StatelessWidget {
 }
 
 class _TelaPrincipal extends State<TelaPrincipal> {
+  final String userName;
   final String userEmail;
   final String userPassword;
   final String userType;
   final int? restauranteId;
 
   _TelaPrincipal({
+    required this.userName,
     required this.userEmail,
     required this.userPassword,
     required this.userType,
@@ -205,7 +210,18 @@ class _TelaPrincipal extends State<TelaPrincipal> {
 
   @override
   Widget build(BuildContext context) {
+    if (userName == null) {
+      // userName é null, faça algo aqui, como exibir uma mensagem de erro
+      return Scaffold(
+        body: Center(
+          child: Text('Erro: userName é null'),
+        ),
+      );
+    }
     print("User Type: $userType");
+    print("User name: ${widget.userName}");
+    print("User Email: ${widget.userEmail}");
+    print("User Password: $userPassword");
 
     return Scaffold(
       body: Container(
@@ -260,6 +276,7 @@ class _TelaPrincipal extends State<TelaPrincipal> {
                               builder: (context) => TelaPerfil(
                                 userEmail: userEmail,
                                 userPassword: userPassword,
+                                userName: userName,
                               ),
                             ),
                           );

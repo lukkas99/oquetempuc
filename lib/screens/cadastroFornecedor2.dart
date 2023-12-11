@@ -36,10 +36,13 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
   int selectedRadio = 0;
   TextEditingController funcionamentoController = TextEditingController();
   bool isActive = true;
-  final dbHelper = DbHelper();
 
   @override
-  Future<int> cadastrarFornecedor() async {
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> cadastrarFornecedor(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       // Crie uma instância da classe Fornecedor com os dados do formulário
       final fornecedor = Fornecedor(
@@ -56,16 +59,38 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
       );
 
       try {
-        final fornecedorData = await dbHelper.saveFornecedorData(fornecedor);
+        final response = await supabase.from('fornecedor').upsert(
+          {
+            'email': fornecedor.email,
+            'encrypted_password': fornecedor.encryptedPassword,
+            'name': fornecedor.name,
+            'cep': fornecedor.cep,
+            'address': fornecedor.address,
+            'service': fornecedor.service,
+            'url': fornecedor.url,
+            'location': fornecedor.location,
+            'funcionamento': fornecedor.funcionamento,
+            'is_active': fornecedor.isActive,
+          },
+        );
 
-        return fornecedorData; // Retorne os dados do fornecedor após a inserção
+        if (response != null && response.error != null) {
+          // Se houver um erro ao salvar informações do usuário, imprima a mensagem de erro
+          print(
+              'Erro ao salvar informações do usuário: ${response.error!.message}');
+        } else {
+          // Se tudo estiver correto, imprima a mensagem de sucesso e redirecione para a página de login
+          print('Fornecedor cadastrado com sucesso!');
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => TelaLogin()),
+          );
+        }
       } catch (error) {
-        // Trate os erros aqui
-        print(error);
-        return -1; // Ou retorne null em caso de erro
+        // Em caso de erro geral, imprima a mensagem de erro
+        print('Erro durante o cadastro: $error');
+        // Exibir mensagem ou tomar medidas adequadas
       }
-    } else {
-      return -1; // Retorne null caso a validação falhe
     }
   }
 
@@ -404,24 +429,7 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10))),
                       onPressed: () async {
-                        final fornecedorData = await cadastrarFornecedor();
-                        if (fornecedorData != -1) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text("Restaurante salvo com sucesso!"),
-                            ),
-                          );
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => TelaLogin()),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text("Erro: Falha ao salvar os dados"),
-                            ),
-                          );
-                        }
+                        await cadastrarFornecedor(context);
                       },
                       child: const Text(
                         'Salvar',

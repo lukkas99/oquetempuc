@@ -184,7 +184,8 @@ class _ProdutosState extends State<Produtos> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => TelaPrincipal(
-                                    userEmail: 'nome',
+                                    userName: 'nome',
+                                    userEmail: 'mail',
                                     userPassword: '555',
                                     userType: 'cliente',
                                   )),

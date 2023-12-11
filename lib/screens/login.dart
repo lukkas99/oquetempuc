@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'principal.dart';
+import 'package:jwt_decode/jwt_decode.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../main.dart';
+import 'package:oquetempuc/screens/principal.dart';
 import 'package:oquetempuc/comm/comHelper.dart';
 import 'package:oquetempuc/model/clientmodel.dart';
 import 'package:oquetempuc/model/fornecedor.dart';
-import 'package:oquetempuc/db/Dbhelper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TelaLogin extends StatefulWidget {
@@ -16,6 +17,7 @@ class _TelaLogin extends State<TelaLogin> {
   Future<SharedPreferences> _pref = SharedPreferences.getInstance();
   final _formKey = GlobalKey<FormState>();
 
+  final _conClientName = TextEditingController();
   final _conClientEmail = TextEditingController();
   final _conClientPassword = TextEditingController();
   var dbHelper;
@@ -23,120 +25,100 @@ class _TelaLogin extends State<TelaLogin> {
   @override
   void initState() {
     super.initState();
-    dbHelper = DbHelper();
   }
 
-  login() async {
-    String cmail = _conClientEmail.text;
-    String passwd = generateMd5(_conClientPassword.text);
+  Future<void> customLogin() async {
+    String cmail = _conClientEmail.text.trim();
+    String passwd = generateMd5(_conClientPassword.text.trim());
 
-    if (cmail.isEmpty) {
-      alertDialog("Please Enter User ID");
-    } else if (passwd.isEmpty) {
-      alertDialog("Please Enter Password");
-    } else {
-      // Verifique na tabela de clientes
-      await dbHelper.getLoginUser(cmail, passwd).then((userData) async {
-        if (userData != null) {
-          // Login como cliente
-          // Armazene os dados do cliente logado
-          String userEmail = userData.client_email;
-          String userPassword = userData.client_password.toString();
-          userType = "cliente";
-          // Atualize o campo logged_in para 1 (indicando que o cliente está logado)
-          dbHelper.setLoggedInStatus(userData.client_email, 1).then((_) {
-            // Continue com o login
-            setSPUser(userData).whenComplete(() {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => TelaPrincipal(
-                    userEmail: userEmail,
-                    userPassword: userPassword,
-                    userType: userType,
-                  ),
-                ),
-                (Route<dynamic> route) => false,
-              );
-            });
-          });
+    try {
+      // Verifique se é um cliente
+      final responseClient = await supabase
+          .from('clientes')
+          .select('user_id, user_nome')
+          .eq('user_email', cmail)
+          .maybeSingle();
+      print('Response: $responseClient');
+
+      // Acesse os dados diretamente do mapa
+      if (responseClient != null) {
+        final Map<String, dynamic> clienteData = responseClient;
+        final String? nome = clienteData['user_nome'] as String?;
+        final int? userId = clienteData['user_id'] as int?;
+        print('Response: $responseClient');
+
+        _navigateToPrincipal(
+          userType: 'cliente',
+          userId: userId,
+          userName: nome,
+          userEmail: cmail,
+        );
+      } else {
+        // Se não for um cliente, verifique se é um fornecedor
+        final responseFornecedor = await supabase
+            .from('fornecedor')
+            .select('id, name')
+            .eq('email', cmail)
+            .eq('encrypted_password', passwd)
+            .maybeSingle();
+
+        // Acesse os dados diretamente do mapa
+        if (responseFornecedor != null) {
+          final Map<String, dynamic> fornecedorData = responseFornecedor;
+          final int? fornecedorId = fornecedorData['id'] as int?;
+          final String? nome = fornecedorData['name'] as String?;
+          print('Response: $responseClient');
+
+          _navigateToPrincipal(
+            userType: 'fornecedor',
+            restauranteId: fornecedorId,
+            userName: nome,
+            userEmail: cmail,
+          );
         } else {
-          // Se não encontrou na tabela de clientes, verifique na tabela de fornecedores
-          await dbHelper
-              .getFornecedorLoginUser(cmail, passwd)
-              .then((fornecedorData) async {
-            if (fornecedorData != null) {
-              // Login como fornecedor
-              // Armazene os dados do fornecedor logado
-              String userEmail = fornecedorData.email;
-              String userPassword = fornecedorData.encryptedPassword.toString();
-              userType = "fornecedor";
-              // Atualize o campo logged_in para 1 (indicando que o fornecedor está logado)
-              dbHelper
-                  .setFornecedorLoggedInStatus(fornecedorData.email, 1)
-                  .then((_) {
-                // Continue com o login
-                setSPForn(fornecedorData).whenComplete(() {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => TelaPrincipal(
-                        userEmail: userEmail,
-                        userPassword: userPassword,
-                        restauranteId: fornecedorData.id,
-                        userType: userType,
-                      ),
-                    ),
-                    (Route<dynamic> route) => false,
-                  );
-                });
-              });
-            } else {
-              alertDialog("Error: User Not Found");
-            }
-          }).catchError((error) {
-            print(error);
-            alertDialog("Error: Login Fail");
-          });
+          // Usuário não é cliente nem fornecedor
+          _showError('Error: Usuário não encontrado');
         }
-      }).catchError((error) {
-        print(error);
-        alertDialog("Error: Login Fail");
-      });
+      }
+    } catch (error) {
+      print('Erro durante o login: $error');
+      _showError('Erro durante o login. Tente novamente.');
     }
   }
 
-  Future setSPForn(Fornecedor fornecedor) async {
-    final SharedPreferences sp = await SharedPreferences.getInstance();
+  void _navigateToPrincipal({
+    required String userType,
+    int? userId,
+    int? restauranteId,
+    String? userName,
+    required String userEmail,
+  }) {
+    print('userId: $userId, userName: $userName)');
 
-    sp.setString("fornecedor_email", fornecedor.email);
-    sp.setString("fornecedor_name", fornecedor.name);
-    sp.setString("fornecedor_cep", fornecedor.cep);
-    sp.setString("fornecedor_address", fornecedor.address);
-    sp.setString("fornecedor_service", fornecedor.service);
-    sp.setString("fornecedor_url", fornecedor.url);
-    sp.setInt("fornecedor_location", fornecedor.location);
-    sp.setString("fornecedor_funcionamento", fornecedor.funcionamento);
-    sp.setBool("fornecedor_isActive", fornecedor.isActive);
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (_) => TelaPrincipal(
+          userName: userName ??
+              '', // Use o valor de userName se não for nulo, caso contrário, use uma string vazia
+          userEmail: userEmail,
+          userPassword: generateMd5(_conClientPassword.text.trim()),
+          userType: userType,
+          restauranteId: restauranteId,
+        ),
+      ),
+      (Route<dynamic> route) => false,
+    );
   }
 
-  Future setSPUser(clientmodel user) async {
-    final SharedPreferences sp = await _pref;
-
-    if (user.client_id != null) {
-      sp.setInt("user_id", user.client_id!);
-    }
-
-    if (user.client_nome != null) {
-      sp.setString("user_name", user.client_nome!);
-    }
-
-    if (user.client_email != null) {
-      sp.setString("email", user.client_email!);
-    }
-
-    if (user.client_password != null) {
-      sp.setString("password", user.client_password!);
+  void _showError(String errorMessage) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(errorMessage),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -295,7 +277,7 @@ class _TelaLogin extends State<TelaLogin> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      onPressed: login,
+                      onPressed: customLogin,
                       child: const Text(
                         'ENTRAR',
                         style: TextStyle(

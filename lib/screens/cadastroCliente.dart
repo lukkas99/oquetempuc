@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'principal.dart';
 import '../main.dart';
-import 'package:oquetempuc/db/Dbhelper.dart';
-import 'package:oquetempuc/comm/comHelper.dart';
-import 'package:oquetempuc/model/clientmodel.dart';
-import 'package:oquetempuc/screens/login.dart';
 import 'package:toast/toast.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:oquetempuc/screens/login.dart';
+import 'package:oquetempuc/comm/comHelper.dart';
 
 class CadastroCliente extends StatefulWidget {
   @override
@@ -15,59 +13,48 @@ class CadastroCliente extends StatefulWidget {
 class _CadastroCliente extends State<CadastroCliente> {
   final _formKey = GlobalKey<FormState>();
 
-  final ClientName = TextEditingController();
+  final clientName = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final passwordConfirm = TextEditingController();
-  var dbHelper;
 
   @override
   void initState() {
     super.initState();
-    dbHelper = DbHelper();
-    // Chame essa função para obter o caminho do banco de dados
   }
 
-  signUp() async {
-    String uname = ClientName.text;
-    String email = emailController.text;
-    String passwd = generateMd5(passwordController.text);
-    String cpasswd = generateMd5(passwordConfirm.text);
+  Future<void> signUp() async {
+    // Obtenha os valores do email e senha dos controladores
+    final String email = emailController.text.trim();
+    final String password = generateMd5(passwordController.text.trim());
+    final String nomeDoUsuario = clientName.text.trim();
 
-    if (_formKey.currentState!.validate()) {
-      if (passwd != cpasswd) {
-        alertDialog('Password Mismatch');
-      } else if (!validateEmail(email)) {
-        alertDialog('Email inválido');
+    try {
+      // Salve informações na tabela de clientes
+      final userInformationResponse = await supabase.from('clientes').upsert(
+        {
+          'user_email': email,
+          'user_nome': nomeDoUsuario,
+          'user_senha': password,
+        },
+      );
+
+      if (userInformationResponse?.error != null) {
+        // Se houver um erro ao salvar informações do usuário, imprima a mensagem de erro
+        print(
+            'Erro ao salvar informações do usuário: ${userInformationResponse!.error!.message}');
       } else {
-        _formKey.currentState!.save();
-
-        // Antes de salvar, verifique se o email já está cadastrado
-        if (await dbHelper.isEmailAlreadyRegistered(email)) {
-          alertDialog('Error: Email already registered');
-        } else {
-          clientmodel uModel = clientmodel(
-            client_nome: uname,
-            client_email: email,
-            client_password: passwd,
-            logged_in: 0,
-          );
-
-          await dbHelper.saveUserData(uModel).then((userData) {
-            alertDialog("Successfully Saved");
-
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => TelaLogin()),
-            );
-          }).catchError((error) {
-            print(error);
-            alertDialog("Error: Data Save Fail");
-          });
-        }
+        // Se tudo estiver correto, imprima a mensagem de sucesso e redirecione para a página de login
+        print('Usuário cadastrado com sucesso!');
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => TelaLogin()),
+        );
       }
-      //await dbHelper.deleteDB();
-      await dbHelper.readAllUserData();
+    } catch (error) {
+      // Em caso de erro geral, imprima a mensagem de erro
+      print('Erro durante o cadastro: $error');
+      // Exibir mensagem ou tomar medidas adequadas
     }
   }
 
@@ -219,7 +206,7 @@ class _CadastroCliente extends State<CadastroCliente> {
                     height: MediaQuery.of(context).size.width *
                         0.05), // Espaço entre a senha e o botão de login
                 TextFormField(
-                  controller: ClientName,
+                  controller: clientName,
                   decoration: InputDecoration(
                     labelText: 'Nome de usuário',
                     focusedBorder: OutlineInputBorder(

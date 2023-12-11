@@ -15,6 +15,10 @@ class _CadastroFornecedor extends State<CadastroFornecedor> {
   TextEditingController passwordConfirm = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
   void signUpFornecedor() {
     final String email = emailController.text;
     final String password = passwordController.text;
