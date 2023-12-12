@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:oquetempuc/screens/restaurante.dart';
 import '../main.dart';
+import '../model/fornecedor.dart';
 import 'perfil.dart';
 import 'perfilRestaurante.dart';
+import 'package:supabase/supabase.dart';
 
 class TelaPrincipal extends StatefulWidget {
   final String userName;
@@ -33,21 +35,21 @@ class Restaurant {
   final String image;
   final double rating;
   final String description;
-  final String location;
+  final String address;
 
   Restaurant({
     required this.name,
     required this.image,
     required this.rating,
     required this.description,
-    required this.location,
+    required this.address,
   });
 }
 
 class RestaurantCard extends StatelessWidget {
-  final Restaurant restaurant;
+  final Fornecedor fornecedor;
 
-  RestaurantCard({required this.restaurant});
+  RestaurantCard({required this.fornecedor});
 
   @override
   Widget build(BuildContext context) {
@@ -59,15 +61,15 @@ class RestaurantCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image.asset(
-              restaurant.image,
-              width: double.infinity, // Estica a imagem na largura da coluna
+              fornecedor.url,
+              width: double.infinity,
               height: 150.0,
               fit: BoxFit.cover,
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                restaurant.name,
+                fornecedor.name,
                 style: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
@@ -75,21 +77,9 @@ class RestaurantCard extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.star,
-                    color: Colors.orange,
-                  ),
-                  Text(restaurant.rating.toStringAsFixed(1)),
-                ],
-              ),
-            ),
-            Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                restaurant.description,
+                fornecedor.service,
                 style: TextStyle(fontSize: 14.0),
               ),
             ),
@@ -101,19 +91,14 @@ class RestaurantCard extends StatelessWidget {
                     Icons.location_on,
                     color: AppColors.cobalt,
                   ),
-                  Text(restaurant.location),
+                  Text(fornecedor.address),
                 ],
               ),
             ),
           ],
         ),
         onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => TelaRestaurante(
-                        restaurant,
-                      )));
+          // Implemente a lógica para lidar com o toque no card aqui
         },
       ),
     );
@@ -136,23 +121,7 @@ class _TelaPrincipal extends State<TelaPrincipal> {
   });
   bool isSearchVisible = false;
   int selectedRadio = 0;
-  final List<Restaurant> restaurants = [
-    Restaurant(
-      name: "Restaurante 1",
-      image: "assets/images/logoRes1.png",
-      rating: 4.5,
-      description: "Comida deliciosa",
-      location: "Endereço 1",
-    ),
-    Restaurant(
-      name: "Restaurante 2",
-      image: "assets/images/logoRes2.png",
-      rating: 4.0,
-      description: "Ótimos pratos",
-      location: "Endereço 2",
-    ),
-    // Adicione mais restaurantes conforme necessário
-  ];
+
   void toggleSearchVisibility() {
     setState(() {
       isSearchVisible = !isSearchVisible;
@@ -208,6 +177,36 @@ class _TelaPrincipal extends State<TelaPrincipal> {
     );
   }
 
+  List<Fornecedor> fornecedores =
+      []; // Adicione esta lista para armazenar os fornecedores
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchFornecedores();
+  }
+
+  Future<void> _fetchFornecedores() async {
+    try {
+      final response =
+          await supabase.from('fornecedor').select().eq('is_active', true);
+
+      if (response is List<dynamic>) {
+        List<dynamic> data = response as List<dynamic>;
+
+        setState(() {
+          fornecedores = data
+              .map((e) => Fornecedor.fromMap(e as Map<String, dynamic>))
+              .toList();
+        });
+      } else {
+        print('Resposta inesperada ao buscar fornecedores: $response');
+      }
+    } catch (e) {
+      print('Erro ao buscar fornecedores: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (userName == null) {
@@ -241,7 +240,7 @@ class _TelaPrincipal extends State<TelaPrincipal> {
                   children: <Widget>[
                     ImageIcon(
                       AssetImage('assets/images/iconPrincipal.png'),
-                      color: Colors.black,
+                      color: AppColors.cobalt,
                       size: 45.0,
                     ),
                     SizedBox(width: MediaQuery.of(context).size.width * 0.05),
@@ -467,14 +466,14 @@ class _TelaPrincipal extends State<TelaPrincipal> {
               // Adicione a lista de estabelecimentos aqui
               ListView.builder(
                 physics: ScrollPhysics(),
-                shrinkWrap: true, // Para evitar rolagem infinita
-                itemCount: restaurants
-                    .length, // Substitua pela sua lista de estabelecimentos
+                shrinkWrap: true,
+                itemCount: fornecedores.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final establishment = restaurants[index];
-                  return RestaurantCard(restaurant: establishment);
+                  final fornecedor = fornecedores[index];
+                  return RestaurantCard(fornecedor: fornecedor);
                 },
               ),
+
               Center(
                 child: ElevatedButton(
                   onPressed: () {

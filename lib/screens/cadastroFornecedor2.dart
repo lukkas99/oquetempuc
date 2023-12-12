@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:oquetempuc/screens/perfilRestaurante.dart';
-import 'package:oquetempuc/screens/principal.dart';
-import 'produtos.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import '../main.dart';
-import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
 import 'dart:async';
-import 'package:oquetempuc/db/DbHelper.dart';
 import 'package:oquetempuc/model/fornecedor.dart';
 import 'package:oquetempuc/screens/login.dart';
-import 'package:oquetempuc/comm/comHelper.dart';
 
 class CadastroFornecedor2 extends StatefulWidget {
   final String email;
@@ -91,6 +85,27 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
         print('Erro durante o cadastro: $error');
         // Exibir mensagem ou tomar medidas adequadas
       }
+    }
+  }
+
+  Future<void> updateAddress(String cep) async {
+    // Use a real API endpoint that provides address details based on the ZIP code
+    final apiUrl = 'https://viacep.com.br/ws/$cep/json/';
+
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        setState(() {
+          // Update the address field based on the fetched data
+          addressController.text = data['logradouro'] ?? '';
+          addressController.text += ', ' + (data['bairro'] ?? '');
+          addressController.text += ', ' + (data['localidade'] ?? '');
+          addressController.text += ', ' + (data['uf'] ?? '');
+        });
+      }
+    } catch (error) {
+      print('Error fetching address: $error');
     }
   }
 
@@ -196,10 +211,9 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                 TextFormField(
                   controller: cepController,
                   decoration: InputDecoration(
-                    labelText: 'Digite o CEP(Ex: 30535-000))',
-                    filled: true, // Preenche o fundo com a cor especificada
-                    fillColor: Color.fromRGBO(
-                        255, 255, 255, 0.8), // Branco com 50% de transparência
+                    labelText: 'Digite o CEP (Ex: 30535-000)',
+                    filled: true,
+                    fillColor: Color.fromRGBO(255, 255, 255, 0.8),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(
@@ -217,20 +231,25 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                       color: AppColors.cobalt,
                     ),
                   ),
+                  onChanged: (cep) {
+                    // Call function to update the address based on the entered CEP
+                    updateAddress(cep);
+                  },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'CEP inválido';
                     }
-                    // Tente converter o valor em um número inteiro
+                    // Try converting the value to an integer
                     if (int.tryParse(value) == null) {
                       return 'Digite um número válido.';
                     }
                     return null;
                   },
                 ),
-                SizedBox(
-                    height: MediaQuery.of(context).size.width *
-                        0.05), // Espaço entre os campos de texto
+                SizedBox(height: MediaQuery.of(context).size.width * 0.05),
+
+                // Rest of your code...
+
                 Text(
                   'Endereço',
                   style: TextStyle(
@@ -239,14 +258,13 @@ class _CadastroFornecedor2State extends State<CadastroFornecedor2> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.015), //
+                SizedBox(height: MediaQuery.of(context).size.height * 0.015),
                 TextFormField(
                   controller: addressController,
                   decoration: InputDecoration(
                     labelText: 'Rua, número, bairro, cidade',
-                    filled: true, // Preenche o fundo com a cor especificada
-                    fillColor: Color.fromRGBO(
-                        255, 255, 255, 0.8), // Branco com 50% de transparência
+                    filled: true,
+                    fillColor: Color.fromRGBO(255, 255, 255, 0.8),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(

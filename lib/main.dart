@@ -23,6 +23,7 @@ void main() async {
     authFlowType: AuthFlowType.pkce,
   );
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     home: TelaInicial(),
   ));
 }

@@ -97,7 +97,7 @@ class _PerfilRestauranteState extends State<PerfilRestaurante> {
                       Text('Nome do restaurante: ${restaurante!.name}'),
                       Text('Endereço: ${restaurante!.address}'),
                       Text('O que servimos: ${restaurante!.service}'),
-                      Text('Localização: ${restaurante!.location}'),
+                      Text('Localização: ${restaurante!.address}'),
                       Text(
                         'Horário de funcionamento: ${restaurante!.funcionamento}',
                       ),
